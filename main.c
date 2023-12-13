@@ -231,6 +231,21 @@ void mostrarInstrucciones(int x, int y) {
 
 }
 
+void mensajeSalida(int x, int y) {
+    system("cls");
+
+    gotoxy(x, y); printf(" ___                                          ___                   _____                            ");
+    gotoxy(x, y + 1); printf("(  _`\\                     _                 (  _`\\                (___  )                           ");
+    gotoxy(x, y + 2); printf("| ( (_) _ __   _ _    ___ (_)   _ _   ___    | |_) )  _    _ __        | | _   _    __     _ _  _ __ ");
+    gotoxy(x, y + 3); printf("| |___ ( '__)/'_` ) /'___)| | /'_` )/',__)   | ,__/'/'_`\\ ( '__)    _  | |( ) ( ) /'_ `\\ /'_` )( '__)");
+    gotoxy(x, y + 4); printf("| (_, )| |  ( (_| |( (___ | |( (_| |\\__, \\   | |   ( (_) )| |      ( )_| || (_) |( (_) |( (_| || |   ");
+    gotoxy(x, y + 5); printf("(____/'(_)  `\\__,_)`\\____)(_)`\\__,_)(____/   (_)   `\\___/'(_)      `\\___/'`\\___/'`\\__  |`\\__,_)(_)   ");
+    gotoxy(x, y + 6); printf("                                                                                 ( )_) |             ");
+    gotoxy(x, y + 7); printf("                                                                                   \\___/              ");
+
+    system("pause");
+}
+
 int main() {
     system("cls");
 
@@ -240,15 +255,19 @@ int main() {
     switch (opcionElegida) {
         case 1:
             jugar();
+            mensajeSalida(3,4);
             break;
         case 2:
             mostrarPuntajes(3,4);
+            mensajeSalida(3,4);
             break;
         case 3:
             mostrarInstrucciones(3, 4);
+            mensajeSalida(3,4);
             break;
         case 4:
             system("cls");
+            mensajeSalida(3,4);
             printf("Saliendo...\n");
             break;
         default:
