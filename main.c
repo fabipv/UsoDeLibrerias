@@ -46,6 +46,9 @@ void mostrarCursor() {
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
+void reproducirSonido() {
+    Beep(500, 300); // Frecuencia, Duración del sonido (en milisegundos)
+}
 
 
 void dibujoInicial(int x, int y) {
@@ -95,15 +98,14 @@ int manejarMenu() {
             if (opcion > 1) {
                 opcion--;
                 //Incluir sonido
-
-
+                reproducirSonido();
 
             }
         } else if (keyPressed(VK_DOWN)) {
             if (opcion < 4) {
                 opcion++;
                 //Incluir sonido
-                
+                reproducirSonido();
             
             }
         }
@@ -274,7 +276,7 @@ int main() {
             break;
     }
 
-    mostrarCursor(); // Mostrar el cursor al finalizar
+    //mostrarCursor(); // Mostrar el cursor al finalizar
 
     
     return 0;
