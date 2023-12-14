@@ -21,6 +21,11 @@ char nombres[MAX_JUGADORES][50] = {
 
 int puntajes[MAX_JUGADORES] = { 150, 120, 100, 90, 80, 70, 60, 50 };
 
+//====================================================================================================
+// FUNCIONES PARA EL MANEJO DE TECLAS Y CURSOR
+//====================================================================================================
+
+// Mueve el cursor a la posición (x, y) en la consola
 void gotoxy(int x, int y) {
     COORD coord;
     coord.X = x;
@@ -28,17 +33,20 @@ void gotoxy(int x, int y) {
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
 }
 
+// Verifica si la tecla especificada (vKey) está actualmente presionada
 bool keyPressed(int vKey) {
     return GetAsyncKeyState(vKey) & 0x8000;
 }
 
+// Oculta el cursor en la consola
 void ocultarCursor() {
     CONSOLE_CURSOR_INFO cursorInfo;
-    cursorInfo.dwSize = 100;
+    cursorInfo.dwSize = 100; 
     cursorInfo.bVisible = FALSE;
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
+// Muestra el cursor en la consola
 void mostrarCursor() {
     CONSOLE_CURSOR_INFO cursorInfo;
     cursorInfo.dwSize = 1;
@@ -46,11 +54,20 @@ void mostrarCursor() {
     SetConsoleCursorInfo(GetStdHandle(STD_OUTPUT_HANDLE), &cursorInfo);
 }
 
+//====================================================================================================
+// FUNCION PARA EL SONIDO
+//====================================================================================================
+
 void reproducirSonido() {
     Beep(500, 300); // Frecuencia, Duración del sonido (en milisegundos)
 }
 
 
+//====================================================================================================
+// FUNCIONES PARA EL MENU
+//====================================================================================================
+
+// Función para dibujar el título del juego al inicio
 void dibujoInicial(int x, int y) {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     // Cambiar el color a  rosado para el dibujo inicial
@@ -73,6 +90,8 @@ void dibujoInicial(int x, int y) {
     SetConsoleTextAttribute(hConsole, 7);
 }
 
+
+// Función para mostrar las opciones del menú
 void opciones(int x, int y, int selected) {
 
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -88,6 +107,7 @@ void opciones(int x, int y, int selected) {
     SetConsoleTextAttribute(hConsole, 7);
 }
 
+// Función para manejar el menú y la interacción con las teclas
 int manejarMenu() {
     ocultarCursor();
 
@@ -99,14 +119,12 @@ int manejarMenu() {
                 opcion--;
                 //Incluir sonido
                 reproducirSonido();
-
             }
         } else if (keyPressed(VK_DOWN)) {
             if (opcion < 4) {
                 opcion++;
                 //Incluir sonido
                 reproducirSonido();
-            
             }
         }
 
@@ -122,6 +140,7 @@ int manejarMenu() {
     return opcion;
 }
 
+// Función para mostrar la información del jugador en pantalla
 void informacionJugador(int x, int y) {
     gotoxy(x, y); printf("        ___________________________");
     gotoxy(x, y + 1); printf("       | ** INFORMACION JUGADOR ** |");
@@ -145,6 +164,7 @@ void informacionJugador(int x, int y) {
     gotoxy(x, y + 19); printf("       |___________________________|");
 }
 
+// Función para dibujar el ahorcado en pantalla
 void dibujarAhorcado(int x, int y) {
     gotoxy(x, y); printf("  ___________ ");
     gotoxy(x, y + 1); printf("  |         |");
@@ -158,6 +178,7 @@ void dibujarAhorcado(int x, int y) {
     gotoxy(x, y + 9); printf("__|__");
 }
 
+// Función para mostrar las letras usadas durante el juego
 void letrasUsadas(int x, int y) {
     gotoxy(x, y); printf("  ___Letras usadas___        ");
     gotoxy(x, y + 1); printf(" |                   |       ");
@@ -165,6 +186,7 @@ void letrasUsadas(int x, int y) {
     gotoxy(x, y + 3); printf(" |___________________|       ");
 }
 
+// Función para mostrar la interfaz de adivinanza de palabras
 void adivinar(int x, int y) {
     gotoxy(x, y); printf("Palabra a adivinar:     _ _ _                                        ");
     gotoxy(x, y + 2); printf("Ingrese una letra:                                    ");
@@ -172,7 +194,7 @@ void adivinar(int x, int y) {
 }
 
 
-
+// Función principal para la pantalla de juego
 void jugar() {
     system("cls");
     // Lógica para la ventana de Jugar
@@ -184,9 +206,14 @@ void jugar() {
 }
 
 
-
+// Función para mostrar los puntajes de los jugadores
 void mostrarPuntajes(int x, int y) {
     system("cls");
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    // Cambiar el color a  rosado para el dibujo inicial
+    SetConsoleTextAttribute(hConsole, 13);
+
     
     gotoxy(x+15, y); printf(".______    __    __  .__   __. .___________.     ___             __   _______      _______.");
     gotoxy(x+15, y + 1); printf("|   _  \\  |  |  |  | |  \\ |  | |           |    /   \\           |  | |   ____|    /       |");
@@ -194,6 +221,9 @@ void mostrarPuntajes(int x, int y) {
     gotoxy(x+15, y + 3); printf("|   ___/  |  |  |  | |  . `  |     |  |       /  /_\\  \\   .--.  |  | |   __|      \\   \\");
     gotoxy(x+15, y + 4); printf("|  |      |  `--'  | |  |\\   |     |  |      /  _____  \\  |  `--'  | |  |____ .----)   |");
     gotoxy(x+15, y + 5); printf("| _|       \\______/  |__| \\__|     |__|     /__/     \\__\\  \\______/  |_______||_______/");
+
+    // Restaurar el color original de la consola
+    SetConsoleTextAttribute(hConsole, 7);
 
     for (int i = 0; i < MAX_JUGADORES; i++) {
         gotoxy(50, 15 + i); // Ubicación en la pantalla para imprimir el nombre
@@ -205,6 +235,7 @@ void mostrarPuntajes(int x, int y) {
     system("pause");
 }
 
+// Función para mostrar las instrucciones del juego
 void mostrarInstrucciones(int x, int y) {
     system("cls");
 
@@ -233,8 +264,14 @@ void mostrarInstrucciones(int x, int y) {
 
 }
 
+
+// Función para mostrar un mensaje de salida o despedida
 void mensajeSalida(int x, int y) {
     system("cls");
+
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    // Cambiar el color a  rosado para el dibujo inicial
+    SetConsoleTextAttribute(hConsole, 13);
 
     gotoxy(x, y); printf(" ___                                          ___                   _____                            ");
     gotoxy(x, y + 1); printf("(  _`\\                     _                 (  _`\\                (___  )                           ");
@@ -245,39 +282,42 @@ void mensajeSalida(int x, int y) {
     gotoxy(x, y + 6); printf("                                                                                 ( )_) |             ");
     gotoxy(x, y + 7); printf("                                                                                   \\___/              ");
 
+    // Restaurar el color original de la consola
+    SetConsoleTextAttribute(hConsole, 7);
+
     system("pause");
 }
 
+
+//====================================================================================================
+// FUNCION PRINCIPAL
+//====================================================================================================
+
 int main() {
-    system("cls");
+    system("cls"); // Limpia la pantalla al iniciar el programa
 
-    int opcionElegida = manejarMenu();
+    int opcionElegida = manejarMenu(); // Llama a la función para manejar el menú y devuelve la opción elegida
 
-    // Cuando se presiona Enter
+    // Evalúa la opción elegida por el usuario
     switch (opcionElegida) {
-        case 1:
-            jugar();
-            mensajeSalida(3,4);
+        case 1: // Opción para jugar
+            jugar(); 
+            mensajeSalida(3,4); 
             break;
-        case 2:
-            mostrarPuntajes(3,4);
-            mensajeSalida(3,4);
+        case 2: // Opción para ver los puntajes
+            mostrarPuntajes(3,4); 
+            mensajeSalida(3,4); 
             break;
-        case 3:
-            mostrarInstrucciones(3, 4);
-            mensajeSalida(3,4);
+        case 3: // Opción para ver las instrucciones
+            mostrarInstrucciones(3, 4); 
+            mensajeSalida(3,4); 
             break;
-        case 4:
-            system("cls");
-            mensajeSalida(3,4);
-            printf("Saliendo...\n");
+        case 4: // Opción para salir
+            mensajeSalida(3,4); // Muestra un mensaje de salida
             break;
-        default:
+        default: // Si se elige una opción no válida
             break;
     }
 
-    //mostrarCursor(); // Mostrar el cursor al finalizar
-
-    
     return 0;
 }
